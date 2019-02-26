@@ -5,6 +5,7 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 func create_deployment_vpc(deploymentPvcData *pb.DeploymentPvc, clientSet *kubernetes.Clientset) (error) {
@@ -16,7 +17,14 @@ func create_deployment_vpc(deploymentPvcData *pb.DeploymentPvc, clientSet *kuber
 			Name: deploymentPvcData.Name,
 		},
 		Spec: apiv1.PersistentVolumeClaimSpec{
-
+			AccessModes: []apiv1.PersistentVolumeAccessMode{
+				apiv1.ReadWriteOnce,
+			},
+			Resources: apiv1.ResourceRequirements{
+				Requests: map[apiv1.ResourceName]resource.Quantity{
+					apiv1.ResourceName(apiv1.ResourceStorage): resource.MustParse(deploymentPvcData.Storage),
+				},
+			},
 		},
 	}
 
@@ -25,7 +33,5 @@ func create_deployment_vpc(deploymentPvcData *pb.DeploymentPvc, clientSet *kuber
 	if err != nil {
 		return err
 	}
-	return nil
-
 	return nil
 }

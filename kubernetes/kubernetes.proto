@@ -22,6 +22,8 @@ message DeploymentPvc {
 
 message Ingress {
     string name = 1;
+    string sub_domain = 2;
+    string resource = 3;
 }
 
 message Database {
