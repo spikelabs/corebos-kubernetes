@@ -8,7 +8,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func createDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clientset) (error) {
+func CreateDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clientset) (error) {
 
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
 

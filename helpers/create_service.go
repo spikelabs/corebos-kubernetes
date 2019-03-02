@@ -8,7 +8,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-func createService(serviceData *pb.Service, clientset *kubernetes.Clientset) error {
+func CreateService (serviceData *pb.Service, clientset *kubernetes.Clientset) error {
 
 	serviceClient := clientset.CoreV1().Services(apiv1.NamespaceDefault)
 

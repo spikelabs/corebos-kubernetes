@@ -8,7 +8,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-func create_deployment_vpc(deploymentPvcData *pb.DeploymentPvc, clientSet *kubernetes.Clientset) (error) {
+func CreateDeploymentPvc(deploymentPvcData *pb.DeploymentPvc, clientSet *kubernetes.Clientset) (error) {
 
 	pvcClient := clientSet.CoreV1().PersistentVolumeClaims(apiv1.NamespaceDefault)
 

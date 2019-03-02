@@ -8,7 +8,8 @@ import (
 	v1beta "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
-func create_ingress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
+
+func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
 	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(apiv1.NamespaceDefault)
 
 	ingress := &v1beta.Ingress{
