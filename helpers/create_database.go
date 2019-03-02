@@ -8,51 +8,54 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func createDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clientset) (error) {
+func createDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) (error) {
 
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
 
-	deployment := &appsv1.Deployment{
+	number := int32(1)
+
+	database := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: deploymentData.Name,
+			Name: databaseData.Name,
 		},
 		Spec: appsv1.DeploymentSpec{
-			Replicas: &deploymentData.Replicas,
+			Replicas: &number,
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"component": deploymentData.Label,
+					"component": databaseData.Label,
 				},
 			},
 			Template: apiv1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"component": deploymentData.Label,
+						"component": databaseData.Label,
 					},
 				},
 				Spec: apiv1.PodSpec{
 					Volumes: []apiv1.Volume{
 						{
-							Name: deploymentData.Name + "-storage",
+							Name: databaseData.Name + "-storage",
 							VolumeSource: apiv1.VolumeSource{
 								PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
-									ClaimName: deploymentData.Name + "-deployment-pvc",
+									ClaimName: databaseData.Name + "-deployment-pvc",
 								},
 							},
 						},
 					},
 					Containers: []apiv1.Container{
 						{
-							Name:  deploymentData.Label,
-							Image: "spikelabs/corebos",
+							Name:  databaseData.Label,
+							Image: "mysql:5.7",
 							Ports: []apiv1.ContainerPort{
 								{
-									ContainerPort: 80,
+									ContainerPort: 3306,
 								},
 							},
 							VolumeMounts: []apiv1.VolumeMount{
 								{
-									Name: deploymentData.Name + "-storage",
-									MountPath: "/www/storage",
+									Name: databaseData.Name + "-storage",
+									MountPath: "/var/lib/mysql",
+									SubPath: "mysql",
 								},
 							},
 						},
@@ -62,7 +65,7 @@ func createDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clie
 		},
 	}
 
-	_, err := deploymentsClient.Create(deployment)
+	_, err := deploymentsClient.Create(database)
 	if err != nil {
 		return err
 	}

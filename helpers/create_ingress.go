@@ -6,6 +6,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	v1beta "k8s.io/api/extensions/v1beta1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 func create_ingress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
 	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(apiv1.NamespaceDefault)
@@ -18,7 +19,22 @@ func create_ingress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 			Rules: []v1beta.IngressRule{
 				{
 					Host: ingressData.SubDomain,
-					//TODO continue ingress implementation
+					IngressRuleValue: v1beta.IngressRuleValue{
+						HTTP: &v1beta.HTTPIngressRuleValue{
+							Paths: []v1beta.HTTPIngressPath{
+								{
+									Path: "/",
+									Backend: v1beta.IngressBackend{
+										ServiceName: ingressData.Resource,
+										ServicePort: intstr.IntOrString{
+											IntVal: 80,
+											Type: intstr.Int,
+										},
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
