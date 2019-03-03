@@ -1,5 +1,5 @@
-hash: 0a9d47675d7006fd60613143104b0469b52cd17647262a03e11cf229dc0a542f
-updated: 2019-02-24T15:39:36.146779478+01:00
+hash: 869bf306f04b3748ccc309b67ec25c60a01f2b3fa66a5f614dca07eeae2bb861
+updated: 2019-03-03T17:08:04.5696695+01:00
 imports:
 - name: github.com/gogo/protobuf
   version: 342cbe0a04158f6dcb03ca0079991a51a4248c02
@@ -7,7 +7,7 @@ imports:
   - proto
   - sortkeys
 - name: github.com/golang/protobuf
-  version: b4deda0973fb4c70b50d226b1af49f3da59f5265
+  version: c823c79ea1570fb5ff454033735a8e68575d1d0f
   subpackages:
   - proto
   - ptypes
@@ -44,7 +44,6 @@ imports:
   version: 0ed95abb35c445290478a5348a7b38bb154135fd
   subpackages:
   - context
-  - context/ctxhttp
   - http2
   - http2/hpack
   - idna
@@ -59,7 +58,7 @@ imports:
   - jws
   - jwt
 - name: golang.org/x/sys
-  version: 95c6576299259db960f6c5b9b69ea52422860fce
+  version: 1c9583448a9c3aa0f9a6a5241bf73c0bd8aafded
   subpackages:
   - unix
   - windows
@@ -85,11 +84,11 @@ imports:
   - internal/urlfetch
   - urlfetch
 - name: google.golang.org/genproto
-  version: 082222b4a5c572e33e82ee9162d1352c7cf38682
+  version: 4f5b463f9597cbe0dd13a6a2cd4f85e788d27508
   subpackages:
   - googleapis/rpc/status
 - name: google.golang.org/grpc
-  version: 2773c7bbcf81cf358d3f0038b1469b2d44062acb
+  version: 2fdaae294f38ed9a121193c51ec99fecd3b13eb7
   subpackages:
   - balancer
   - balancer/base
@@ -149,7 +148,6 @@ imports:
   - core/v1
   - events/v1beta1
   - extensions/v1beta1
-  - imagepolicy/v1alpha1
   - networking/v1
   - policy/v1beta1
   - rbac/v1
@@ -172,7 +170,6 @@ imports:
   - pkg/api/meta
   - pkg/api/resource
   - pkg/apis/meta/fuzzer
-  - pkg/apis/meta/internalversion
   - pkg/apis/meta/v1
   - pkg/apis/meta/v1/unstructured
   - pkg/apis/meta/v1beta1
@@ -190,30 +187,21 @@ imports:
   - pkg/runtime/serializer/versioning
   - pkg/selection
   - pkg/types
-  - pkg/util/cache
   - pkg/util/clock
   - pkg/util/diff
   - pkg/util/errors
   - pkg/util/framer
-  - pkg/util/httpstream
-  - pkg/util/httpstream/spdy
   - pkg/util/intstr
   - pkg/util/json
-  - pkg/util/mergepatch
   - pkg/util/naming
   - pkg/util/net
-  - pkg/util/remotecommand
   - pkg/util/runtime
   - pkg/util/sets
-  - pkg/util/strategicpatch
   - pkg/util/validation
   - pkg/util/validation/field
-  - pkg/util/wait
   - pkg/util/yaml
   - pkg/version
   - pkg/watch
-  - third_party/forked/golang/json
-  - third_party/forked/golang/netutil
   - third_party/forked/golang/reflect
 - name: k8s.io/client-go
   version: e64494209f554a6723674bd494d69445fb76a1d4

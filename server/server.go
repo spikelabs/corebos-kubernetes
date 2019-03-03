@@ -8,11 +8,11 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-type server struct {
+type Server struct {
 
 }
 
-func (s *server)  CreateClient(ctx context.Context, request *pb.CreateClientRequest) (*pb.CreateClientResponse, error) {
+func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequest) (*pb.CreateClientResponse, error) {
 
 	deployment := request.Deployment
 	service := request.Service

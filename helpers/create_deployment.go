@@ -43,7 +43,7 @@ func CreateDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clie
 					Containers: []apiv1.Container{
 						{
 							Name:  deploymentData.Label,
-							Image: "spikelabs/corebos",
+							Image: "spikelabs/corebos-demo",
 							Ports: []apiv1.ContainerPort{
 								{
 									ContainerPort: 80,
