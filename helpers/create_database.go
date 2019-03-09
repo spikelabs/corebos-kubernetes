@@ -51,6 +51,20 @@ func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) 
 									ContainerPort: 3306,
 								},
 							},
+							Env: []apiv1.EnvVar{
+								{
+									Name: "MYSQL_DATABASE",
+									Value: databaseData.DbDatabase,
+								},
+								{
+									Name: "MYSQL_USER",
+									Value: databaseData.DbUsername,
+								},
+								{
+									Name: "MYSQL_PASSWORD",
+									Value: databaseData.DbPassword,
+								},
+							},
 							VolumeMounts: []apiv1.VolumeMount{
 								{
 									Name: databaseData.Name + "-storage",
