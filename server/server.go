@@ -34,11 +34,52 @@ func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequ
 	// call helpers to create resources in kubernetes cluster
 
 	err = helpers.CreateDeploymentPvc(deploymentPvc, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
 	err = helpers.CreateDeployment(deployment, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
 	err = helpers.CreateService(service, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
 	err = helpers.CreateDatabasePvc(databasePvc, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
 	err = helpers.CreateDatabase(database, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
 	err = helpers.CreateIngress(ingress, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
 
 
 	return &pb.CreateClientResponse{
