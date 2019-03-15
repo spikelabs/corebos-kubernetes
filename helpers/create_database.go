@@ -64,6 +64,10 @@ func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) 
 									Name: "MYSQL_PASSWORD",
 									Value: databaseData.DbPassword,
 								},
+								{
+									Name: "MYSQL_ROOT_PASSWORD",
+									Value: "root",
+								},
 							},
 							VolumeMounts: []apiv1.VolumeMount{
 								{
