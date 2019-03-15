@@ -10,6 +10,6 @@ script:
   - docker run spikelabs/corebos-kubernetes-test go version
 
 after_success:
-  - docker build -t spikelabs/corebos-kubernetes -f ./deployment/Dockerfile .
+  - docker build -t spikelabs/corebos-kubernetes .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push spikelabs/corebos-kubernetes
