@@ -2,15 +2,15 @@ package helpers
 
 import (
 	pb "corebos-kubernetes/kubernetes"
-	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	v1beta "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"os"
 )
 
 func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
-	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(apiv1.NamespaceDefault)
+	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(os.Getenv("NAMESPACE"))
 
 	ingress := &v1beta.Ingress{
 		ObjectMeta: metav1.ObjectMeta{

@@ -6,11 +6,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"os"
 )
 
 func CreateDeploymentPvc(deploymentPvcData *pb.DeploymentPvc, clientSet *kubernetes.Clientset) (error) {
 
-	pvcClient := clientSet.CoreV1().PersistentVolumeClaims(apiv1.NamespaceDefault)
+	pvcClient := clientSet.CoreV1().PersistentVolumeClaims(os.Getenv("NAMESPACE"))
 
 	deploymentPvc := &apiv1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{

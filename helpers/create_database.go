@@ -6,11 +6,12 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	"os"
 )
 
 func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) (error) {
 
-	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
+	deploymentsClient := clientset.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
 	number := int32(1)
 

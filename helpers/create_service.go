@@ -6,11 +6,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"os"
 )
 
 func CreateService (serviceData *pb.Service, clientset *kubernetes.Clientset) error {
 
-	serviceClient := clientset.CoreV1().Services(apiv1.NamespaceDefault)
+	serviceClient := clientset.CoreV1().Services(os.Getenv("NAMESPACE"))
 
 	service := &apiv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
