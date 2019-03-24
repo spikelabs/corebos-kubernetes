@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) (error) {
+func CreateDatabase(databaseData *pb.Database, claimName string, clientset *kubernetes.Clientset) (error) {
 
 	deploymentsClient := clientset.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
@@ -38,7 +38,7 @@ func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) 
 							Name: databaseData.Name + "-storage",
 							VolumeSource: apiv1.VolumeSource{
 								PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
-									ClaimName: databaseData.Label + "-pvc",
+									ClaimName: claimName,
 								},
 							},
 						},

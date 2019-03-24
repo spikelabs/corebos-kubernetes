@@ -42,7 +42,7 @@ func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequ
 		}, nil
 	}
 
-	err = helpers.CreateDeployment(deployment, clientset)
+	err = helpers.CreateDeployment(deployment, deploymentPvc.Name, clientset)
 	if err != nil{
 		return &pb.CreateClientResponse{
 			Success: 0,
@@ -66,7 +66,7 @@ func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequ
 		}, nil
 	}
 
-	err = helpers.CreateDatabase(database, clientset)
+	err = helpers.CreateDatabase(database, databasePvc.Name, clientset)
 	if err != nil{
 		return &pb.CreateClientResponse{
 			Success: 0,

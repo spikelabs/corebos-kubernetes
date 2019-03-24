@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func CreateDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clientset) (error) {
+func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientset *kubernetes.Clientset) (error) {
 
 	deploymentsClient := clientset.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
@@ -36,7 +36,7 @@ func CreateDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clie
 							Name: deploymentData.Name + "-storage",
 							VolumeSource: apiv1.VolumeSource{
 								PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
-									ClaimName: deploymentData.Label + "-deployment-pvc",
+									ClaimName: claimName,
 								},
 							},
 						},
