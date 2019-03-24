@@ -38,7 +38,7 @@ func CreateDatabase(databaseData *pb.Database, clientset *kubernetes.Clientset) 
 							Name: databaseData.Name + "-storage",
 							VolumeSource: apiv1.VolumeSource{
 								PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
-									ClaimName: databaseData.Name + "-deployment-pvc",
+									ClaimName: databaseData.Label + "-database-pvc",
 								},
 							},
 						},

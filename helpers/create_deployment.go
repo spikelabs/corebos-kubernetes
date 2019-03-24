@@ -36,7 +36,7 @@ func CreateDeployment (deploymentData *pb.Deployment, clientset *kubernetes.Clie
 							Name: deploymentData.Name + "-storage",
 							VolumeSource: apiv1.VolumeSource{
 								PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
-									ClaimName: deploymentData.Name + "-deployment-pvc",
+									ClaimName: deploymentData.Label + "-deployment-pvc",
 								},
 							},
 						},
