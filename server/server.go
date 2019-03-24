@@ -19,6 +19,7 @@ func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequ
 	deploymentPvc := request.DeploymentPvc
 	ingress := request.Ingress
 	database := request.Database
+	databaseService := request.DatabaseService
 	databasePvc := request.DatabasePvc
 
 	config, err := rest.InClusterConfig()
@@ -66,6 +67,14 @@ func (s *Server)  CreateClient(ctx context.Context, request *pb.CreateClientRequ
 	}
 
 	err = helpers.CreateDatabase(database, clientset)
+	if err != nil{
+		return &pb.CreateClientResponse{
+			Success: 0,
+			Error: err.Error(),
+		}, nil
+	}
+
+	err = helpers.CreateDatabaseService(databaseService, clientset)
 	if err != nil{
 		return &pb.CreateClientResponse{
 			Success: 0,
