@@ -44,10 +44,32 @@ func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientse
 					Containers: []apiv1.Container{
 						{
 							Name:  deploymentData.Label,
-							Image: "spikelabs/corebos-demo",
+							Image: "spikelabs/corebos-gdpr",
 							Ports: []apiv1.ContainerPort{
 								{
 									ContainerPort: 80,
+								},
+							},
+							Env: []apiv1.EnvVar{
+								{
+									Name: "COREBOS_DBSERVER",
+									Value: deploymentData.DbHost,
+								},
+								{
+									Name: "COREBOS_DBUSER",
+									Value: deploymentData.DbUsername,
+								},
+								{
+									Name: "COREBOS_DBPASS",
+									Value: deploymentData.DbPassword,
+								},
+								{
+									Name: "COREBOS_DBNAME",
+									Value: deploymentData.DbDatabase,
+								},
+								{
+									Name: "COREBOS_SITEURL",
+									Value: deploymentData.SiteUrl,
 								},
 							},
 							VolumeMounts: []apiv1.VolumeMount{
