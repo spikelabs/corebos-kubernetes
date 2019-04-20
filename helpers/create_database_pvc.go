@@ -29,6 +29,10 @@ func CreateDatabasePvc (databasePvcData *pb.DatabasePvc, clientSet *kubernetes.C
 		},
 	}
 
+	if os.Getenv("APP_ENV") == "production" {
+		storageClassName := "do-block-storage"
+		databasePvc.Spec.StorageClassName = &storageClassName
+	}
 
 	_, err := pvcClient.Create(databasePvc)
 	if err != nil {

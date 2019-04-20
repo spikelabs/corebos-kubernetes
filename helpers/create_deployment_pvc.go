@@ -29,6 +29,10 @@ func CreateDeploymentPvc(deploymentPvcData *pb.DeploymentPvc, clientSet *kuberne
 		},
 	}
 
+	if os.Getenv("APP_ENV") == "production" {
+		storageClassName := "do-block-storage"
+		deploymentPvc.Spec.StorageClassName = &storageClassName
+	}
 
 	_, err := pvcClient.Create(deploymentPvc)
 	if err != nil {
