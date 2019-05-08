@@ -15,8 +15,20 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 	ingress := &v1beta.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: ingressData.Name,
+			Annotations: map[string]string{
+				"kubernetes.io/ingress.class": "nginx",
+				"certmanager.k8s.io/cluster-issuer": "letsencrypt-prod",
+			},
 		},
 		Spec: v1beta.IngressSpec{
+			TLS: []v1beta.IngressTLS{
+				{
+					Hosts: []string{
+						ingressData.SubDomain,
+					},
+					SecretName: "letsencrypt-prod",
+				},
+			},
 			Rules: []v1beta.IngressRule{
 				{
 					Host: ingressData.SubDomain,
@@ -24,7 +36,6 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 						HTTP: &v1beta.HTTPIngressRuleValue{
 							Paths: []v1beta.HTTPIngressPath{
 								{
-									Path: "/",
 									Backend: v1beta.IngressBackend{
 										ServiceName: ingressData.Resource,
 										ServicePort: intstr.IntOrString{
