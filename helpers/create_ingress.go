@@ -26,7 +26,7 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 					Hosts: []string{
 						ingressData.SubDomain,
 					},
-					SecretName: "letsencrypt-prod",
+					SecretName: ingressData.Name + "-cert",
 				},
 			},
 			Rules: []v1beta.IngressRule{
