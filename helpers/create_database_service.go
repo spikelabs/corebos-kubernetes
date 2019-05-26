@@ -9,9 +9,9 @@ import (
 	"os"
 )
 
-func CreateDatabaseService (databaseServiceData *pb.DatabaseService, clientset *kubernetes.Clientset) error {
+func CreateDatabaseService (databaseServiceData *pb.DatabaseService, clientSet *kubernetes.Clientset) error {
 
-	serviceClient := clientset.CoreV1().Services(os.Getenv("NAMESPACE"))
+	serviceClient := clientSet.CoreV1().Services(os.Getenv("NAMESPACE"))
 
 	service := &apiv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
@@ -35,8 +35,5 @@ func CreateDatabaseService (databaseServiceData *pb.DatabaseService, clientset *
 	}
 
 	_, err := serviceClient.Create(service)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

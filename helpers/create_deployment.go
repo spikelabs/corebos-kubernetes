@@ -9,9 +9,9 @@ import (
 	"os"
 )
 
-func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientset *kubernetes.Clientset) (error) {
+func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientSet *kubernetes.Clientset) (error) {
 
-	deploymentsClient := clientset.AppsV1().Deployments(os.Getenv("NAMESPACE"))
+	deploymentsClient := clientSet.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -44,7 +44,7 @@ func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientse
 					Containers: []apiv1.Container{
 						{
 							Name:  deploymentData.Label,
-							Image: "spikelabs/corebos-gdpr",
+							Image: deploymentData.Image,
 							Ports: []apiv1.ContainerPort{
 								{
 									ContainerPort: 80,
@@ -86,8 +86,5 @@ func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientse
 	}
 
 	_, err := deploymentsClient.Create(deployment)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

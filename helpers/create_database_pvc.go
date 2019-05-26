@@ -35,8 +35,5 @@ func CreateDatabasePvc (databasePvcData *pb.DatabasePvc, clientSet *kubernetes.C
 	}
 
 	_, err := pvcClient.Create(databasePvc)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

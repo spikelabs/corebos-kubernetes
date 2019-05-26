@@ -9,3 +9,5 @@ import:
   - proto
 - package: google.golang.org/grpc
   version: v1.19.0
+- package: github.com/imdario/mergo
+- package: github.com/spf13/pflag

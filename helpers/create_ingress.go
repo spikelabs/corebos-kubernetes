@@ -53,8 +53,5 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 	}
 
 	_, err := ingressClient.Create(ingress)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

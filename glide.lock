@@ -1,5 +1,5 @@
-hash: 869bf306f04b3748ccc309b67ec25c60a01f2b3fa66a5f614dca07eeae2bb861
-updated: 2019-03-03T17:08:04.5696695+01:00
+hash: 63be3d2370880f7cdcb697dbf76b31def31c9ce30ba90903feb22124cd1c294c
+updated: 2019-05-20T22:04:16.714794733+02:00
 imports:
 - name: github.com/gogo/protobuf
   version: 342cbe0a04158f6dcb03ca0079991a51a4248c02
@@ -28,6 +28,8 @@ imports:
   version: 787624de3eb7bd915c329cba748687a3b22666a6
   subpackages:
   - diskcache
+- name: github.com/imdario/mergo
+  version: 9316a62528ac99aaecb4e47eadd6dc8aa6533d58
 - name: github.com/json-iterator/go
   version: ab8a2e0c74be9d3be70b3184d9acc634935ded82
 - name: github.com/modern-go/concurrent
@@ -36,6 +38,8 @@ imports:
   version: 94122c33edd36123c84d5368cfb2b69df93a0ec8
 - name: github.com/peterbourgon/diskv
   version: 5f041e8faa004a95c88a202771f4cc3e991971e6
+- name: github.com/spf13/pflag
+  version: 583c0c0531f06d5278b7d917446061adc344b5cd
 - name: golang.org/x/crypto
   version: de0752318171da717af4ce24d0a2e8626afaeb11
   subpackages:
@@ -248,13 +252,18 @@ imports:
   - plugin/pkg/client/auth/exec
   - rest
   - rest/watch
+  - tools/auth
+  - tools/clientcmd
   - tools/clientcmd/api
+  - tools/clientcmd/api/latest
+  - tools/clientcmd/api/v1
   - tools/metrics
   - tools/reference
   - transport
   - util/cert
   - util/connrotation
   - util/flowcontrol
+  - util/homedir
   - util/integer
 - name: k8s.io/klog
   version: 8139d8cb77af419532b33dfa7dd09fbc5f1d344f

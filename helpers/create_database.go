@@ -9,9 +9,9 @@ import (
 	"os"
 )
 
-func CreateDatabase(databaseData *pb.Database, claimName string, clientset *kubernetes.Clientset) (error) {
+func CreateDatabase(databaseData *pb.Database, claimName string, clientSet *kubernetes.Clientset) (error) {
 
-	deploymentsClient := clientset.AppsV1().Deployments(os.Getenv("NAMESPACE"))
+	deploymentsClient := clientSet.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
 	number := int32(1)
 
@@ -85,8 +85,5 @@ func CreateDatabase(databaseData *pb.Database, claimName string, clientset *kube
 	}
 
 	_, err := deploymentsClient.Create(database)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

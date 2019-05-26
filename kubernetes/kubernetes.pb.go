@@ -31,6 +31,7 @@ type Deployment struct {
 	DbPassword           string   `protobuf:"bytes,6,opt,name=db_password,json=dbPassword,proto3" json:"db_password,omitempty"`
 	DbDatabase           string   `protobuf:"bytes,7,opt,name=db_database,json=dbDatabase,proto3" json:"db_database,omitempty"`
 	SiteUrl              string   `protobuf:"bytes,8,opt,name=site_url,json=siteUrl,proto3" json:"site_url,omitempty"`
+	Image                string   `protobuf:"bytes,9,opt,name=image,proto3" json:"image,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -113,6 +114,13 @@ func (m *Deployment) GetDbDatabase() string {
 func (m *Deployment) GetSiteUrl() string {
 	if m != nil {
 		return m.SiteUrl
+	}
+	return ""
+}
+
+func (m *Deployment) GetImage() string {
+	if m != nil {
+		return m.Image
 	}
 	return ""
 }
@@ -431,20 +439,77 @@ func (m *DatabasePvc) GetStorage() string {
 	return ""
 }
 
+type DatabaseNodePort struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Label                string   `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	Port                 int32    `protobuf:"varint,3,opt,name=port,proto3" json:"port,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DatabaseNodePort) Reset()         { *m = DatabaseNodePort{} }
+func (m *DatabaseNodePort) String() string { return proto.CompactTextString(m) }
+func (*DatabaseNodePort) ProtoMessage()    {}
+func (*DatabaseNodePort) Descriptor() ([]byte, []int) {
+	return fileDescriptor_40204d9320c6ada8, []int{7}
+}
+
+func (m *DatabaseNodePort) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DatabaseNodePort.Unmarshal(m, b)
+}
+func (m *DatabaseNodePort) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DatabaseNodePort.Marshal(b, m, deterministic)
+}
+func (m *DatabaseNodePort) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DatabaseNodePort.Merge(m, src)
+}
+func (m *DatabaseNodePort) XXX_Size() int {
+	return xxx_messageInfo_DatabaseNodePort.Size(m)
+}
+func (m *DatabaseNodePort) XXX_DiscardUnknown() {
+	xxx_messageInfo_DatabaseNodePort.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DatabaseNodePort proto.InternalMessageInfo
+
+func (m *DatabaseNodePort) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *DatabaseNodePort) GetLabel() string {
+	if m != nil {
+		return m.Label
+	}
+	return ""
+}
+
+func (m *DatabaseNodePort) GetPort() int32 {
+	if m != nil {
+		return m.Port
+	}
+	return 0
+}
+
 type CreateClientDatabaseRequest struct {
-	Database             *Database        `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
-	DatabaseService      *DatabaseService `protobuf:"bytes,2,opt,name=database_service,json=databaseService,proto3" json:"database_service,omitempty"`
-	DatabasePvc          *DatabasePvc     `protobuf:"bytes,3,opt,name=database_pvc,json=databasePvc,proto3" json:"database_pvc,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	Database             *Database         `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
+	DatabaseService      *DatabaseService  `protobuf:"bytes,2,opt,name=database_service,json=databaseService,proto3" json:"database_service,omitempty"`
+	DatabasePvc          *DatabasePvc      `protobuf:"bytes,3,opt,name=database_pvc,json=databasePvc,proto3" json:"database_pvc,omitempty"`
+	DatabaseNodePort     *DatabaseNodePort `protobuf:"bytes,4,opt,name=database_node_port,json=databaseNodePort,proto3" json:"database_node_port,omitempty"`
+	ConfigData           string            `protobuf:"bytes,5,opt,name=configData,proto3" json:"configData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *CreateClientDatabaseRequest) Reset()         { *m = CreateClientDatabaseRequest{} }
 func (m *CreateClientDatabaseRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateClientDatabaseRequest) ProtoMessage()    {}
 func (*CreateClientDatabaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_40204d9320c6ada8, []int{7}
+	return fileDescriptor_40204d9320c6ada8, []int{8}
 }
 
 func (m *CreateClientDatabaseRequest) XXX_Unmarshal(b []byte) error {
@@ -486,11 +551,27 @@ func (m *CreateClientDatabaseRequest) GetDatabasePvc() *DatabasePvc {
 	return nil
 }
 
+func (m *CreateClientDatabaseRequest) GetDatabaseNodePort() *DatabaseNodePort {
+	if m != nil {
+		return m.DatabaseNodePort
+	}
+	return nil
+}
+
+func (m *CreateClientDatabaseRequest) GetConfigData() string {
+	if m != nil {
+		return m.ConfigData
+	}
+	return ""
+}
+
 type CreateClientDeploymentRequest struct {
 	Deployment           *Deployment    `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
 	Service              *Service       `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
 	DeploymentPvc        *DeploymentPvc `protobuf:"bytes,3,opt,name=deployment_pvc,json=deploymentPvc,proto3" json:"deployment_pvc,omitempty"`
 	Ingress              *Ingress       `protobuf:"bytes,4,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	DatabaseNodePortName string         `protobuf:"bytes,5,opt,name=database_node_port_name,json=databaseNodePortName,proto3" json:"database_node_port_name,omitempty"`
+	ConfigData           string         `protobuf:"bytes,6,opt,name=configData,proto3" json:"configData,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -500,7 +581,7 @@ func (m *CreateClientDeploymentRequest) Reset()         { *m = CreateClientDeplo
 func (m *CreateClientDeploymentRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateClientDeploymentRequest) ProtoMessage()    {}
 func (*CreateClientDeploymentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_40204d9320c6ada8, []int{8}
+	return fileDescriptor_40204d9320c6ada8, []int{9}
 }
 
 func (m *CreateClientDeploymentRequest) XXX_Unmarshal(b []byte) error {
@@ -549,6 +630,209 @@ func (m *CreateClientDeploymentRequest) GetIngress() *Ingress {
 	return nil
 }
 
+func (m *CreateClientDeploymentRequest) GetDatabaseNodePortName() string {
+	if m != nil {
+		return m.DatabaseNodePortName
+	}
+	return ""
+}
+
+func (m *CreateClientDeploymentRequest) GetConfigData() string {
+	if m != nil {
+		return m.ConfigData
+	}
+	return ""
+}
+
+type UpdateClientIngressRequest struct {
+	Ingress              *Ingress `protobuf:"bytes,1,opt,name=ingress,proto3" json:"ingress,omitempty"`
+	ConfigData           string   `protobuf:"bytes,2,opt,name=configData,proto3" json:"configData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateClientIngressRequest) Reset()         { *m = UpdateClientIngressRequest{} }
+func (m *UpdateClientIngressRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateClientIngressRequest) ProtoMessage()    {}
+func (*UpdateClientIngressRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_40204d9320c6ada8, []int{10}
+}
+
+func (m *UpdateClientIngressRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateClientIngressRequest.Unmarshal(m, b)
+}
+func (m *UpdateClientIngressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateClientIngressRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateClientIngressRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateClientIngressRequest.Merge(m, src)
+}
+func (m *UpdateClientIngressRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateClientIngressRequest.Size(m)
+}
+func (m *UpdateClientIngressRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateClientIngressRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateClientIngressRequest proto.InternalMessageInfo
+
+func (m *UpdateClientIngressRequest) GetIngress() *Ingress {
+	if m != nil {
+		return m.Ingress
+	}
+	return nil
+}
+
+func (m *UpdateClientIngressRequest) GetConfigData() string {
+	if m != nil {
+		return m.ConfigData
+	}
+	return ""
+}
+
+type UpdateClientDeploymentRequest struct {
+	Deployment           *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+	ConfigData           string      `protobuf:"bytes,2,opt,name=configData,proto3" json:"configData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
+}
+
+func (m *UpdateClientDeploymentRequest) Reset()         { *m = UpdateClientDeploymentRequest{} }
+func (m *UpdateClientDeploymentRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateClientDeploymentRequest) ProtoMessage()    {}
+func (*UpdateClientDeploymentRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_40204d9320c6ada8, []int{11}
+}
+
+func (m *UpdateClientDeploymentRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateClientDeploymentRequest.Unmarshal(m, b)
+}
+func (m *UpdateClientDeploymentRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateClientDeploymentRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateClientDeploymentRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateClientDeploymentRequest.Merge(m, src)
+}
+func (m *UpdateClientDeploymentRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateClientDeploymentRequest.Size(m)
+}
+func (m *UpdateClientDeploymentRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateClientDeploymentRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateClientDeploymentRequest proto.InternalMessageInfo
+
+func (m *UpdateClientDeploymentRequest) GetDeployment() *Deployment {
+	if m != nil {
+		return m.Deployment
+	}
+	return nil
+}
+
+func (m *UpdateClientDeploymentRequest) GetConfigData() string {
+	if m != nil {
+		return m.ConfigData
+	}
+	return ""
+}
+
+type DeleteClientRequest struct {
+	DeploymentName       string   `protobuf:"bytes,1,opt,name=deployment_name,json=deploymentName,proto3" json:"deployment_name,omitempty"`
+	ServiceName          string   `protobuf:"bytes,2,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	DeploymentPvcName    string   `protobuf:"bytes,3,opt,name=deployment_pvc_name,json=deploymentPvcName,proto3" json:"deployment_pvc_name,omitempty"`
+	IngressName          string   `protobuf:"bytes,4,opt,name=ingress_name,json=ingressName,proto3" json:"ingress_name,omitempty"`
+	DatabaseName         string   `protobuf:"bytes,5,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
+	DatabaseServiceName  string   `protobuf:"bytes,6,opt,name=database_service_name,json=databaseServiceName,proto3" json:"database_service_name,omitempty"`
+	DatabasePvcName      string   `protobuf:"bytes,7,opt,name=database_pvc_name,json=databasePvcName,proto3" json:"database_pvc_name,omitempty"`
+	ConfigData           string   `protobuf:"bytes,8,opt,name=configData,proto3" json:"configData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteClientRequest) Reset()         { *m = DeleteClientRequest{} }
+func (m *DeleteClientRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteClientRequest) ProtoMessage()    {}
+func (*DeleteClientRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_40204d9320c6ada8, []int{12}
+}
+
+func (m *DeleteClientRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteClientRequest.Unmarshal(m, b)
+}
+func (m *DeleteClientRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteClientRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteClientRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteClientRequest.Merge(m, src)
+}
+func (m *DeleteClientRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteClientRequest.Size(m)
+}
+func (m *DeleteClientRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteClientRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteClientRequest proto.InternalMessageInfo
+
+func (m *DeleteClientRequest) GetDeploymentName() string {
+	if m != nil {
+		return m.DeploymentName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetServiceName() string {
+	if m != nil {
+		return m.ServiceName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetDeploymentPvcName() string {
+	if m != nil {
+		return m.DeploymentPvcName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetIngressName() string {
+	if m != nil {
+		return m.IngressName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetDatabaseName() string {
+	if m != nil {
+		return m.DatabaseName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetDatabaseServiceName() string {
+	if m != nil {
+		return m.DatabaseServiceName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetDatabasePvcName() string {
+	if m != nil {
+		return m.DatabasePvcName
+	}
+	return ""
+}
+
+func (m *DeleteClientRequest) GetConfigData() string {
+	if m != nil {
+		return m.ConfigData
+	}
+	return ""
+}
+
 type ClientResponse struct {
 	Success              int32    `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
@@ -561,7 +845,7 @@ func (m *ClientResponse) Reset()         { *m = ClientResponse{} }
 func (m *ClientResponse) String() string { return proto.CompactTextString(m) }
 func (*ClientResponse) ProtoMessage()    {}
 func (*ClientResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_40204d9320c6ada8, []int{9}
+	return fileDescriptor_40204d9320c6ada8, []int{13}
 }
 
 func (m *ClientResponse) XXX_Unmarshal(b []byte) error {
@@ -604,50 +888,70 @@ func init() {
 	proto.RegisterType((*Database)(nil), "Database")
 	proto.RegisterType((*DatabaseService)(nil), "DatabaseService")
 	proto.RegisterType((*DatabasePvc)(nil), "DatabasePvc")
+	proto.RegisterType((*DatabaseNodePort)(nil), "DatabaseNodePort")
 	proto.RegisterType((*CreateClientDatabaseRequest)(nil), "CreateClientDatabaseRequest")
 	proto.RegisterType((*CreateClientDeploymentRequest)(nil), "CreateClientDeploymentRequest")
+	proto.RegisterType((*UpdateClientIngressRequest)(nil), "UpdateClientIngressRequest")
+	proto.RegisterType((*UpdateClientDeploymentRequest)(nil), "UpdateClientDeploymentRequest")
+	proto.RegisterType((*DeleteClientRequest)(nil), "DeleteClientRequest")
 	proto.RegisterType((*ClientResponse)(nil), "ClientResponse")
 }
 
 func init() { proto.RegisterFile("kubernetes.proto", fileDescriptor_40204d9320c6ada8) }
 
 var fileDescriptor_40204d9320c6ada8 = []byte{
-	// 545 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xef, 0x6a, 0xd4, 0x4e,
-	0x14, 0xfd, 0xa5, 0xdd, 0xdd, 0x64, 0x6f, 0xda, 0xdd, 0x65, 0x28, 0x3f, 0x63, 0xb5, 0x5a, 0x06,
-	0x84, 0x82, 0x10, 0x61, 0x8b, 0x9f, 0x16, 0x41, 0xe8, 0x82, 0x8a, 0x08, 0x25, 0x52, 0xf0, 0xdb,
-	0x32, 0xc9, 0x5c, 0xd6, 0x60, 0x36, 0x13, 0x67, 0x26, 0x2b, 0x3e, 0x89, 0x6f, 0xe0, 0x03, 0xf8,
-	0x1a, 0x3e, 0x89, 0x6f, 0x21, 0x99, 0x64, 0xb2, 0x7f, 0x08, 0xad, 0xfd, 0x36, 0xf7, 0x6f, 0xce,
-	0xb9, 0xe7, 0x10, 0x98, 0x7c, 0x29, 0x63, 0x94, 0x39, 0x6a, 0x54, 0x61, 0x21, 0x85, 0x16, 0xf4,
-	0x8f, 0x03, 0x30, 0xc7, 0x22, 0x13, 0xdf, 0x57, 0x98, 0x6b, 0x72, 0x0a, 0x9e, 0xc4, 0x22, 0x4b,
-	0x13, 0xa6, 0x02, 0xe7, 0xdc, 0xb9, 0xe8, 0x47, 0x6d, 0x4c, 0x08, 0xf4, 0x72, 0xb6, 0xc2, 0xe0,
-	0xe0, 0xdc, 0xb9, 0x18, 0x46, 0xe6, 0x4d, 0x4e, 0xa0, 0x9f, 0xb1, 0x18, 0xb3, 0xe0, 0xd0, 0x24,
-	0xeb, 0x80, 0x3c, 0x00, 0x97, 0xc7, 0x8b, 0xcf, 0x42, 0xe9, 0xa0, 0x67, 0xf2, 0x03, 0x1e, 0xbf,
-	0x15, 0x4a, 0x93, 0xa7, 0xe0, 0xf3, 0x78, 0x51, 0x2a, 0x94, 0x66, 0x53, 0xdf, 0x14, 0x81, 0xc7,
-	0x37, 0x4d, 0xa6, 0x69, 0x28, 0x98, 0x52, 0xdf, 0x84, 0xe4, 0xc1, 0xc0, 0x36, 0x5c, 0x37, 0x99,
-	0xa6, 0x81, 0x33, 0xcd, 0x62, 0xa6, 0x30, 0x70, 0x6d, 0xc3, 0xbc, 0xc9, 0x90, 0x87, 0xe0, 0xa9,
-	0x54, 0xe3, 0xa2, 0x94, 0x59, 0xe0, 0x99, 0xaa, 0x5b, 0xc5, 0x37, 0x32, 0xa3, 0x97, 0xe0, 0x7e,
-	0x44, 0xb9, 0x4e, 0x13, 0x6c, 0xb9, 0x38, 0x5d, 0x5c, 0x0e, 0xb6, 0xb8, 0xd0, 0x57, 0x70, 0xbc,
-	0xb9, 0xcf, 0xf5, 0x3a, 0xe9, 0x1c, 0x0d, 0xc0, 0x55, 0x5a, 0x48, 0xb6, 0xb4, 0xd7, 0xb1, 0x21,
-	0xfd, 0x04, 0xee, 0xbb, 0x7c, 0x29, 0x51, 0xa9, 0xce, 0xc1, 0x33, 0x00, 0x55, 0xc6, 0x0b, 0x2e,
-	0x56, 0x2c, 0xcd, 0x9b, 0xd9, 0xa1, 0x2a, 0xe3, 0xb9, 0x49, 0xd4, 0x72, 0x28, 0x51, 0xca, 0x04,
-	0x9b, 0x0b, 0xb7, 0x31, 0xfd, 0xe1, 0x80, 0xd7, 0xb2, 0xfe, 0x67, 0x3e, 0xfb, 0x12, 0x1c, 0xde,
-	0x25, 0x41, 0xef, 0x2e, 0x09, 0xfa, 0xfb, 0x12, 0xd0, 0x19, 0x8c, 0xed, 0xfb, 0xfe, 0xf7, 0x9e,
-	0x81, 0x6f, 0x87, 0xef, 0x7f, 0xed, 0x5f, 0x0e, 0x3c, 0xba, 0x92, 0xc8, 0x34, 0x5e, 0x65, 0x29,
-	0xe6, 0xda, 0x6e, 0x8a, 0xf0, 0x6b, 0x89, 0x4a, 0x93, 0x67, 0xe0, 0xb5, 0xb8, 0xab, 0x8d, 0xfe,
-	0x74, 0x18, 0xb6, 0x3d, 0x6d, 0x89, 0xcc, 0x60, 0x62, 0xdf, 0x0b, 0x55, 0x33, 0x30, 0x5f, 0xf2,
-	0xa7, 0x93, 0x70, 0x8f, 0x59, 0x34, 0xe6, 0x7b, 0x54, 0x5f, 0xc0, 0x51, 0x3b, 0x5c, 0xac, 0x13,
-	0x73, 0x61, 0x7f, 0x7a, 0x14, 0x6e, 0xb1, 0x8a, 0x7c, 0xbe, 0x09, 0xe8, 0x6f, 0x07, 0xce, 0x76,
-	0x40, 0xb7, 0x76, 0xb3, 0xb0, 0x9f, 0x03, 0xf0, 0x36, 0xd9, 0x00, 0xf7, 0xc3, 0xad, 0xbe, 0xad,
-	0x32, 0xa1, 0xe0, 0xee, 0x62, 0xf6, 0x42, 0x8b, 0xd5, 0x16, 0xc8, 0x4b, 0x18, 0x6d, 0x26, 0xb6,
-	0x50, 0x8e, 0xc2, 0x1d, 0xaf, 0x47, 0xc7, 0x7c, 0xc7, 0xfa, 0x14, 0xdc, 0xb4, 0x36, 0xb3, 0xb1,
-	0x45, 0xb5, 0xba, 0x31, 0x77, 0x64, 0x0b, 0xf4, 0x35, 0x8c, 0x6a, 0x1a, 0x11, 0xaa, 0x42, 0xe4,
-	0xaa, 0x96, 0xab, 0x4c, 0x92, 0x6a, 0xaa, 0xfe, 0xa5, 0xd8, 0xb0, 0x72, 0x00, 0x4a, 0x29, 0xa4,
-	0x75, 0x80, 0x09, 0xa6, 0x3f, 0x9d, 0x6a, 0x45, 0xa9, 0x34, 0xca, 0x0f, 0x2c, 0x67, 0x4b, 0x94,
-	0xe4, 0x0d, 0x9c, 0x74, 0xc9, 0x4a, 0x1e, 0x87, 0xb7, 0xa8, 0x7d, 0x3a, 0x0e, 0x77, 0x91, 0xd0,
-	0xff, 0xc8, 0x7b, 0xf8, 0xbf, 0xfb, 0xd4, 0xe4, 0x49, 0x78, 0xab, 0x06, 0x1d, 0xcb, 0xe2, 0x81,
-	0xf9, 0x85, 0x5e, 0xfe, 0x0d, 0x00, 0x00, 0xff, 0xff, 0xa3, 0x81, 0x9c, 0x0d, 0x56, 0x05, 0x00,
-	0x00,
+	// 809 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x96, 0xdd, 0x6e, 0xeb, 0x44,
+	0x10, 0xc7, 0x89, 0x4f, 0x12, 0x3b, 0xe3, 0xb4, 0x49, 0x37, 0x81, 0x63, 0x7a, 0x68, 0x39, 0x18,
+	0x21, 0x8e, 0x40, 0x5a, 0xa4, 0x54, 0x15, 0x17, 0x15, 0x02, 0xa9, 0x41, 0x80, 0x10, 0x55, 0x64,
+	0x54, 0x89, 0x3b, 0xe3, 0x8f, 0x25, 0x58, 0x38, 0x5e, 0xb3, 0x6b, 0x17, 0xf1, 0x1c, 0x5c, 0x70,
+	0xcf, 0x5b, 0xf1, 0x1c, 0x3c, 0x00, 0xc8, 0xeb, 0x5d, 0x67, 0xed, 0xb8, 0x2d, 0xd5, 0xb9, 0xf3,
+	0xce, 0xce, 0xec, 0xcc, 0xfe, 0x66, 0xff, 0x93, 0xc0, 0xfc, 0x97, 0x32, 0x24, 0x2c, 0x23, 0x05,
+	0xe1, 0x38, 0x67, 0xb4, 0xa0, 0xee, 0xbf, 0x03, 0x80, 0x35, 0xc9, 0x53, 0xfa, 0xfb, 0x8e, 0x64,
+	0x05, 0x3a, 0x05, 0x8b, 0x91, 0x3c, 0x4d, 0xa2, 0x80, 0x3b, 0x83, 0x97, 0x83, 0x57, 0x23, 0xaf,
+	0x59, 0x23, 0x04, 0xc3, 0x2c, 0xd8, 0x11, 0xc7, 0x78, 0x39, 0x78, 0x35, 0xf1, 0xc4, 0x37, 0x5a,
+	0xc2, 0x28, 0x0d, 0x42, 0x92, 0x3a, 0xcf, 0x84, 0xb1, 0x5e, 0xa0, 0xe7, 0x60, 0xc6, 0xa1, 0xff,
+	0x33, 0xe5, 0x85, 0x33, 0x14, 0xf6, 0x71, 0x1c, 0x7e, 0x4d, 0x79, 0x81, 0xde, 0x05, 0x3b, 0x0e,
+	0xfd, 0x92, 0x13, 0x26, 0x4e, 0x1a, 0x89, 0x4d, 0x88, 0xc3, 0x5b, 0x69, 0x91, 0x0e, 0x79, 0xc0,
+	0xf9, 0x6f, 0x94, 0xc5, 0xce, 0x58, 0x39, 0x6c, 0xa4, 0x45, 0x3a, 0xc4, 0x41, 0x11, 0x84, 0x01,
+	0x27, 0x8e, 0xa9, 0x1c, 0xd6, 0xd2, 0x82, 0xde, 0x06, 0x8b, 0x27, 0x05, 0xf1, 0x4b, 0x96, 0x3a,
+	0x96, 0xd8, 0x35, 0xab, 0xf5, 0x2d, 0x4b, 0xab, 0x62, 0x93, 0x5d, 0xb0, 0x25, 0xce, 0xa4, 0x2e,
+	0x56, 0x2c, 0xdc, 0x0b, 0x30, 0xbf, 0x27, 0xec, 0x2e, 0x89, 0x48, 0x73, 0xc3, 0x41, 0xdf, 0x0d,
+	0x0d, 0xed, 0x86, 0xee, 0x67, 0x70, 0xb4, 0xa7, 0xb6, 0xb9, 0x8b, 0x7a, 0x43, 0x1d, 0x30, 0x79,
+	0x41, 0x59, 0x95, 0xd1, 0x90, 0x95, 0xd4, 0x4b, 0xf7, 0x07, 0x30, 0xbf, 0xc9, 0xb6, 0x8c, 0x70,
+	0xde, 0x1b, 0x78, 0x06, 0xc0, 0xcb, 0xd0, 0x8f, 0xe9, 0x2e, 0x48, 0x32, 0x19, 0x3b, 0xe1, 0x65,
+	0xb8, 0x16, 0x86, 0xba, 0x49, 0x9c, 0x96, 0x2c, 0x22, 0x92, 0x7b, 0xb3, 0x76, 0xff, 0x1c, 0x80,
+	0xd5, 0xb0, 0xf8, 0xdf, 0xf7, 0xe9, 0x36, 0xe6, 0xd9, 0x63, 0x8d, 0x19, 0x3e, 0xd6, 0x98, 0x51,
+	0xb7, 0x31, 0xee, 0x15, 0xcc, 0xd4, 0xf7, 0xd3, 0x79, 0x5f, 0x81, 0xad, 0x82, 0x9f, 0x4e, 0x7b,
+	0x03, 0x73, 0x15, 0x7c, 0x43, 0x63, 0xb2, 0xa1, 0xac, 0x78, 0x02, 0x1a, 0x04, 0xc3, 0x9c, 0xb2,
+	0x42, 0x30, 0x19, 0x79, 0xe2, 0xdb, 0xfd, 0xc3, 0x80, 0x17, 0xd7, 0x8c, 0x04, 0x05, 0xb9, 0x4e,
+	0x13, 0x92, 0x15, 0xea, 0x78, 0x8f, 0xfc, 0x5a, 0x12, 0x5e, 0xa0, 0x0f, 0xc0, 0x6a, 0x48, 0x54,
+	0x19, 0xec, 0xd5, 0x04, 0x37, 0x3e, 0xcd, 0x16, 0xba, 0x82, 0xb9, 0xfa, 0xf6, 0x79, 0xcd, 0x44,
+	0xe4, 0xb6, 0x57, 0x73, 0xdc, 0x61, 0xe5, 0xcd, 0xe2, 0x0e, 0xbc, 0x4f, 0x60, 0xda, 0x04, 0xe7,
+	0x77, 0x91, 0xa8, 0xcf, 0x5e, 0x4d, 0xb1, 0xc6, 0xc9, 0xb3, 0x63, 0x0d, 0xda, 0xe7, 0x80, 0x9a,
+	0x80, 0x8c, 0xc6, 0xc4, 0x17, 0xd7, 0x1a, 0x8a, 0xb0, 0x13, 0xdc, 0x25, 0xe4, 0x35, 0xa5, 0x35,
+	0xcc, 0xce, 0x01, 0x22, 0x9a, 0xfd, 0x94, 0x6c, 0x2b, 0x5f, 0xd5, 0xe1, 0xbd, 0xc5, 0xfd, 0xcb,
+	0x80, 0xb3, 0x16, 0x95, 0x46, 0x21, 0x8a, 0xcb, 0xc7, 0x00, 0x71, 0x63, 0x94, 0x64, 0x6c, 0xac,
+	0xf9, 0x69, 0xdb, 0xc8, 0x05, 0xb3, 0x0d, 0xc5, 0xc2, 0x0a, 0x86, 0xda, 0x40, 0x97, 0x70, 0xbc,
+	0x8f, 0xd0, 0x30, 0x1c, 0xe3, 0x96, 0x3c, 0xbd, 0xa3, 0xb8, 0xa5, 0x56, 0x17, 0xcc, 0xa4, 0xd6,
+	0x9f, 0xbc, 0xbf, 0x85, 0xa5, 0x1e, 0x3d, 0xb5, 0x81, 0x2e, 0xe1, 0xf9, 0x21, 0x2e, 0x5f, 0x9b,
+	0x5b, 0xcb, 0x2e, 0xa0, 0x9b, 0xea, 0x11, 0xb5, 0x21, 0x8d, 0x0f, 0x20, 0xfd, 0x08, 0xa7, 0xb7,
+	0x79, 0xdc, 0x30, 0x52, 0x69, 0x25, 0x20, 0xad, 0xb0, 0xc1, 0x7d, 0x85, 0xb5, 0x33, 0x18, 0x07,
+	0x19, 0x52, 0x38, 0xd3, 0x33, 0xbc, 0x66, 0x17, 0x1e, 0xcb, 0xf6, 0xb7, 0x01, 0x8b, 0x35, 0x49,
+	0x89, 0x4a, 0xa7, 0x92, 0x7c, 0x08, 0x33, 0xad, 0x33, 0x9a, 0xd6, 0xb4, 0x86, 0x09, 0x60, 0xef,
+	0xc1, 0x54, 0x76, 0xd3, 0xd7, 0x7e, 0x5e, 0x6c, 0x69, 0x13, 0x2e, 0x18, 0x16, 0xed, 0x2e, 0xfb,
+	0xda, 0x94, 0x3a, 0x69, 0xb5, 0x56, 0x1d, 0x29, 0x61, 0xd5, 0x8e, 0xf5, 0xb4, 0xb2, 0xa5, 0x4d,
+	0xb8, 0xbc, 0x0f, 0x47, 0xfb, 0xee, 0xee, 0x7b, 0xda, 0x48, 0x4a, 0x38, 0xad, 0xe0, 0xcd, 0xae,
+	0x3e, 0x6b, 0xe7, 0xba, 0xad, 0x8b, 0x8e, 0x24, 0x45, 0xcc, 0x47, 0x70, 0xa2, 0xcb, 0xb2, 0xf6,
+	0xaf, 0x7f, 0xa6, 0x66, 0x9a, 0x1a, 0x7b, 0xde, 0x8a, 0x75, 0xc0, 0xf6, 0x0b, 0x38, 0x56, 0x50,
+	0x79, 0x4e, 0x33, 0x5e, 0x0f, 0xb9, 0x32, 0x8a, 0xd4, 0xfb, 0x18, 0x79, 0x6a, 0x59, 0x0d, 0x2f,
+	0xc2, 0x18, 0x65, 0x6a, 0x78, 0x89, 0xc5, 0xea, 0x1f, 0xa3, 0x3a, 0xa2, 0xe4, 0x05, 0x61, 0xdf,
+	0x05, 0x59, 0xb0, 0x25, 0x0c, 0x7d, 0x05, 0xcb, 0xbe, 0xd1, 0x85, 0xde, 0xc1, 0x0f, 0x4c, 0xb4,
+	0xd3, 0x19, 0x6e, 0x57, 0xe2, 0xbe, 0x81, 0xbe, 0x85, 0xb7, 0xfa, 0xd5, 0x8e, 0xce, 0xf1, 0x83,
+	0x63, 0xa0, 0xef, 0xb0, 0x2f, 0x61, 0xd1, 0x23, 0x0b, 0xf4, 0x02, 0xdf, 0x2f, 0x96, 0x7b, 0x6a,
+	0xea, 0x7f, 0xfb, 0xe8, 0x1c, 0x3f, 0x28, 0x8a, 0xbe, 0xc3, 0x3e, 0x85, 0xa9, 0xfe, 0xb2, 0xd1,
+	0x12, 0xf7, 0x3c, 0xf4, 0x9e, 0xc0, 0x70, 0x2c, 0xfe, 0x5b, 0x5d, 0xfc, 0x17, 0x00, 0x00, 0xff,
+	0xff, 0x8e, 0x39, 0x43, 0x84, 0x6f, 0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -664,6 +968,9 @@ const _ = grpc.SupportPackageIsVersion4
 type ClusterManagerClient interface {
 	CreateClientDatabase(ctx context.Context, in *CreateClientDatabaseRequest, opts ...grpc.CallOption) (*ClientResponse, error)
 	CreateClientDeployment(ctx context.Context, in *CreateClientDeploymentRequest, opts ...grpc.CallOption) (*ClientResponse, error)
+	UpdateClientIngress(ctx context.Context, in *UpdateClientIngressRequest, opts ...grpc.CallOption) (*ClientResponse, error)
+	UpdateClientDeployment(ctx context.Context, in *UpdateClientDeploymentRequest, opts ...grpc.CallOption) (*ClientResponse, error)
+	DeleteClient(ctx context.Context, in *DeleteClientRequest, opts ...grpc.CallOption) (*ClientResponse, error)
 }
 
 type clusterManagerClient struct {
@@ -692,10 +999,40 @@ func (c *clusterManagerClient) CreateClientDeployment(ctx context.Context, in *C
 	return out, nil
 }
 
+func (c *clusterManagerClient) UpdateClientIngress(ctx context.Context, in *UpdateClientIngressRequest, opts ...grpc.CallOption) (*ClientResponse, error) {
+	out := new(ClientResponse)
+	err := c.cc.Invoke(ctx, "/ClusterManager/UpdateClientIngress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clusterManagerClient) UpdateClientDeployment(ctx context.Context, in *UpdateClientDeploymentRequest, opts ...grpc.CallOption) (*ClientResponse, error) {
+	out := new(ClientResponse)
+	err := c.cc.Invoke(ctx, "/ClusterManager/UpdateClientDeployment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clusterManagerClient) DeleteClient(ctx context.Context, in *DeleteClientRequest, opts ...grpc.CallOption) (*ClientResponse, error) {
+	out := new(ClientResponse)
+	err := c.cc.Invoke(ctx, "/ClusterManager/DeleteClient", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterManagerServer is the server API for ClusterManager service.
 type ClusterManagerServer interface {
 	CreateClientDatabase(context.Context, *CreateClientDatabaseRequest) (*ClientResponse, error)
 	CreateClientDeployment(context.Context, *CreateClientDeploymentRequest) (*ClientResponse, error)
+	UpdateClientIngress(context.Context, *UpdateClientIngressRequest) (*ClientResponse, error)
+	UpdateClientDeployment(context.Context, *UpdateClientDeploymentRequest) (*ClientResponse, error)
+	DeleteClient(context.Context, *DeleteClientRequest) (*ClientResponse, error)
 }
 
 func RegisterClusterManagerServer(s *grpc.Server, srv ClusterManagerServer) {
@@ -738,6 +1075,60 @@ func _ClusterManager_CreateClientDeployment_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterManager_UpdateClientIngress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateClientIngressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).UpdateClientIngress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ClusterManager/UpdateClientIngress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).UpdateClientIngress(ctx, req.(*UpdateClientIngressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClusterManager_UpdateClientDeployment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateClientDeploymentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).UpdateClientDeployment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ClusterManager/UpdateClientDeployment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).UpdateClientDeployment(ctx, req.(*UpdateClientDeploymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClusterManager_DeleteClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteClientRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).DeleteClient(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ClusterManager/DeleteClient",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).DeleteClient(ctx, req.(*DeleteClientRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _ClusterManager_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ClusterManager",
 	HandlerType: (*ClusterManagerServer)(nil),
@@ -749,6 +1140,18 @@ var _ClusterManager_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateClientDeployment",
 			Handler:    _ClusterManager_CreateClientDeployment_Handler,
+		},
+		{
+			MethodName: "UpdateClientIngress",
+			Handler:    _ClusterManager_UpdateClientIngress_Handler,
+		},
+		{
+			MethodName: "UpdateClientDeployment",
+			Handler:    _ClusterManager_UpdateClientDeployment_Handler,
+		},
+		{
+			MethodName: "DeleteClient",
+			Handler:    _ClusterManager_DeleteClient_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

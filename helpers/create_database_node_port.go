@@ -9,31 +9,33 @@ import (
 	"os"
 )
 
-func CreateService (serviceData *pb.Service, clientSet *kubernetes.Clientset) error {
+func CreateDatabaseNodePort (nodePortData *pb.DatabaseNodePort, clientSet *kubernetes.Clientset) error {
 
 	serviceClient := clientSet.CoreV1().Services(os.Getenv("NAMESPACE"))
 
-	service := &apiv1.Service{
+	nodePort := &apiv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: serviceData.Name,
+			Name: nodePortData.Name,
 		},
 		Spec: apiv1.ServiceSpec{
-			Type: apiv1.ServiceTypeClusterIP,
+			Type: apiv1.ServiceTypeNodePort,
 			Selector: map[string]string{
-				"component": serviceData.Label,
+				"component": nodePortData.Label,
 			},
 			Ports: []apiv1.ServicePort{
 				{
-					Port: 80,
+					Port: nodePortData.Port,
 					TargetPort: intstr.IntOrString{
 						Type: intstr.Int,
-						IntVal: 80,
+						IntVal: 3306,
 					},
+					NodePort: nodePortData.Port,
 				},
 			},
 		},
 	}
 
-	_, err := serviceClient.Create(service)
+	_, err := serviceClient.Create(nodePort)
+
 	return err
 }

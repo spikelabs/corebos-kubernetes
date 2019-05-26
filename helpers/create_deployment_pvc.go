@@ -35,8 +35,5 @@ func CreateDeploymentPvc(deploymentPvcData *pb.DeploymentPvc, clientSet *kuberne
 	}
 
 	_, err := pvcClient.Create(deploymentPvc)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
