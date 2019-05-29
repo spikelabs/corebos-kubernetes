@@ -4,12 +4,12 @@ import (
 	pb "corebos-kubernetes/kubernetes"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
 	"os"
 )
 
-func CreateDatabaseNodePort (nodePortData *pb.DatabaseNodePort, clientSet *kubernetes.Clientset) error {
+func CreateDatabaseNodePort(nodePortData *pb.DatabaseNodePort, clientSet *kubernetes.Clientset) error {
 
 	serviceClient := clientSet.CoreV1().Services(os.Getenv("NAMESPACE"))
 
@@ -26,7 +26,7 @@ func CreateDatabaseNodePort (nodePortData *pb.DatabaseNodePort, clientSet *kuber
 				{
 					Port: nodePortData.Port,
 					TargetPort: intstr.IntOrString{
-						Type: intstr.Int,
+						Type:   intstr.Int,
 						IntVal: 3306,
 					},
 					NodePort: nodePortData.Port,

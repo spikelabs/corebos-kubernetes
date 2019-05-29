@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientSet *kubernetes.Clientset) (error) {
+func CreateDeployment(deploymentData *pb.Deployment, claimName string, clientSet *kubernetes.Clientset) error {
 
 	deploymentsClient := clientSet.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
@@ -52,29 +52,29 @@ func CreateDeployment (deploymentData *pb.Deployment, claimName string, clientSe
 							},
 							Env: []apiv1.EnvVar{
 								{
-									Name: "COREBOS_DBSERVER",
+									Name:  "COREBOS_DBSERVER",
 									Value: deploymentData.DbHost,
 								},
 								{
-									Name: "COREBOS_DBUSER",
+									Name:  "COREBOS_DBUSER",
 									Value: deploymentData.DbUsername,
 								},
 								{
-									Name: "COREBOS_DBPASS",
+									Name:  "COREBOS_DBPASS",
 									Value: deploymentData.DbPassword,
 								},
 								{
-									Name: "COREBOS_DBNAME",
+									Name:  "COREBOS_DBNAME",
 									Value: deploymentData.DbDatabase,
 								},
 								{
-									Name: "COREBOS_SITEURL",
+									Name:  "COREBOS_SITEURL",
 									Value: deploymentData.SiteUrl,
 								},
 							},
 							VolumeMounts: []apiv1.VolumeMount{
 								{
-									Name: deploymentData.Name + "-storage",
+									Name:      deploymentData.Name + "-storage",
 									MountPath: "/www/storage",
 								},
 							},

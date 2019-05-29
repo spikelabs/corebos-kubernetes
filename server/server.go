@@ -2,18 +2,17 @@ package server
 
 import (
 	"context"
-	pb "corebos-kubernetes/kubernetes"
 	"corebos-kubernetes/helpers"
+	pb "corebos-kubernetes/kubernetes"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type Server struct {
-
 }
 
 func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateClientDatabaseRequest) (*pb.ClientResponse, error) {
-	
+
 	database := request.Database
 	databaseService := request.DatabaseService
 	databasePvc := request.DatabasePvc
@@ -24,49 +23,47 @@ func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateCli
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
-	// creates the clientSet
+
 	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
-	// call helpers to create resources in kubernetes cluster
-
 	err = helpers.CreateDatabasePvc(databasePvc, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateDatabase(database, databasePvc.Name, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateDatabaseService(databaseService, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateDatabaseNodePort(databaseNodePort, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -88,57 +85,55 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
-	// creates the clientSet
+
 	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
-	// call helpers to create resources in kubernetes cluster
-
 	err = helpers.DeleteDatabaseNodePort(nodePortName, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateDeploymentPvc(deploymentPvc, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateDeployment(deployment, deploymentPvc.Name, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateService(service, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
 	err = helpers.CreateIngress(ingress, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -156,25 +151,23 @@ func (s *Server) UpdateClientIngress(ctx context.Context, request *pb.UpdateClie
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
-	// creates the clientSet
+
 	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
-	// call helpers to create resources in kubernetes cluster
-
 	err = helpers.UpdateIngress(ingress, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -192,25 +185,23 @@ func (s *Server) UpdateClientDeployment(ctx context.Context, request *pb.UpdateC
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
-	// creates the clientSet
+
 	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
-	// call helpers to create resources in kubernetes cluster
-
 	err = helpers.UpdateDeployment(deployment, clientSet)
-	if err != nil{
+	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -234,15 +225,15 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
-	// creates the clientSet
+
 	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -250,7 +241,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -258,7 +249,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -266,7 +257,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -274,7 +265,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -282,7 +273,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -290,7 +281,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 
@@ -298,7 +289,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	if err != nil {
 		return &pb.ClientResponse{
 			Success: 0,
-			Error: err.Error(),
+			Error:   err.Error(),
 		}, nil
 	}
 

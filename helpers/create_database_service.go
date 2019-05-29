@@ -4,12 +4,12 @@ import (
 	pb "corebos-kubernetes/kubernetes"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
 	"os"
 )
 
-func CreateDatabaseService (databaseServiceData *pb.DatabaseService, clientSet *kubernetes.Clientset) error {
+func CreateDatabaseService(databaseServiceData *pb.DatabaseService, clientSet *kubernetes.Clientset) error {
 
 	serviceClient := clientSet.CoreV1().Services(os.Getenv("NAMESPACE"))
 
@@ -26,7 +26,7 @@ func CreateDatabaseService (databaseServiceData *pb.DatabaseService, clientSet *
 				{
 					Port: 3306,
 					TargetPort: intstr.IntOrString{
-						Type: intstr.Int,
+						Type:   intstr.Int,
 						IntVal: 3306,
 					},
 				},

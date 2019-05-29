@@ -2,21 +2,21 @@ package helpers
 
 import (
 	pb "corebos-kubernetes/kubernetes"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 	v1beta "k8s.io/api/extensions/v1beta1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
 	"os"
 )
 
-func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
+func CreateIngress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
 	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(os.Getenv("NAMESPACE"))
 
 	ingress := &v1beta.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: ingressData.Name,
 			Annotations: map[string]string{
-				"kubernetes.io/ingress.class": "nginx",
+				"kubernetes.io/ingress.class":       "nginx",
 				"certmanager.k8s.io/cluster-issuer": "corebos-cluster-issuer",
 			},
 		},
@@ -40,7 +40,7 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 										ServiceName: ingressData.Resource,
 										ServicePort: intstr.IntOrString{
 											IntVal: 80,
-											Type: intstr.Int,
+											Type:   intstr.Int,
 										},
 									},
 								},

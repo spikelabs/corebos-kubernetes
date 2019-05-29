@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func CreateDatabase(databaseData *pb.Database, claimName string, clientSet *kubernetes.Clientset) (error) {
+func CreateDatabase(databaseData *pb.Database, claimName string, clientSet *kubernetes.Clientset) error {
 
 	deploymentsClient := clientSet.AppsV1().Deployments(os.Getenv("NAMESPACE"))
 
@@ -54,27 +54,27 @@ func CreateDatabase(databaseData *pb.Database, claimName string, clientSet *kube
 							},
 							Env: []apiv1.EnvVar{
 								{
-									Name: "MYSQL_DATABASE",
+									Name:  "MYSQL_DATABASE",
 									Value: databaseData.DbDatabase,
 								},
 								{
-									Name: "MYSQL_USER",
+									Name:  "MYSQL_USER",
 									Value: databaseData.DbUsername,
 								},
 								{
-									Name: "MYSQL_PASSWORD",
+									Name:  "MYSQL_PASSWORD",
 									Value: databaseData.DbPassword,
 								},
 								{
-									Name: "MYSQL_ROOT_PASSWORD",
+									Name:  "MYSQL_ROOT_PASSWORD",
 									Value: "root",
 								},
 							},
 							VolumeMounts: []apiv1.VolumeMount{
 								{
-									Name: databaseData.Name + "-storage",
+									Name:      databaseData.Name + "-storage",
 									MountPath: "/var/lib/mysql",
-									SubPath: "mysql",
+									SubPath:   "mysql",
 								},
 							},
 						},

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"net"
-	"log"
-	"google.golang.org/grpc"
 	kb "corebos-kubernetes/kubernetes"
 	"corebos-kubernetes/server"
+	"google.golang.org/grpc"
+	"log"
+	"net"
 )
 
-func main()  {
+func main() {
 	lis, err := net.Listen("tcp", ":80")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

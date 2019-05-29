@@ -4,11 +4,11 @@ import (
 	pb "corebos-kubernetes/kubernetes"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	"os"
 	"k8s.io/client-go/util/retry"
+	"os"
 )
 
-func UpdateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
+func UpdateIngress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) error {
 	ingressClient := clientSet.ExtensionsV1beta1().Ingresses(os.Getenv("NAMESPACE"))
 
 	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
