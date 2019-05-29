@@ -17,7 +17,7 @@ func CreateIngress (ingressData *pb.Ingress, clientSet *kubernetes.Clientset) er
 			Name: ingressData.Name,
 			Annotations: map[string]string{
 				"kubernetes.io/ingress.class": "nginx",
-				"certmanager.k8s.io/cluster-issuer": "letsencrypt-prod",
+				"certmanager.k8s.io/cluster-issuer": "corebos-cluster-issuer",
 			},
 		},
 		Spec: v1beta.IngressSpec{
