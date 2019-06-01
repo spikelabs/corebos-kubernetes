@@ -18,6 +18,7 @@ func UpdateIngress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) err
 		}
 
 		result.Spec.Rules[0].Host = ingressData.SubDomain
+		result.Spec.TLS[0].Hosts = []string{ingressData.SubDomain}
 
 		_, updateErr := ingressClient.Update(result)
 		return updateErr
