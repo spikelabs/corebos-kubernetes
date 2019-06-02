@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 docker build -t spikelabs/corebos-kubernetes -t spikelabs/corebos-kubernetes:$SHA .
 docker push spikelabs/corebos-kubernetes
 docker push spikelabs/corebos-kubernetes:$SHA
