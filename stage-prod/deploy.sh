@@ -12,6 +12,6 @@ mkdir ~/.kube
 
 curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITAL_OCEAN_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" > kubeconfig.yaml
 
-mv kubeconfig ~/.kube/config
+mv kubeconfig.yaml ~/.kube/config
 
 kubectl apply -f ./stage-prod/k8s
