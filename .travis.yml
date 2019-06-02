@@ -21,6 +21,6 @@ after_success:
 
 deploy:
   - provider: script
-    script: ./stage-prod/deploy.sh
+    script: bash ./stage-prod/deploy.sh
     on:
       branch: master
