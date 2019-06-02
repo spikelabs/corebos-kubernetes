@@ -13,3 +13,5 @@ curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGIT
 mv kubeconfig.yaml ~/.kube/config
 
 kubectl apply -f ./stage-prod/k8s
+
+kubectl set image deployments/corebos-kubernetes-deployment corebos-kubernetes=spikelabs/corebos-kubernetes:$SHA
