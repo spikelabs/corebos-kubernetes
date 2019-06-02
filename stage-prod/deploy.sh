@@ -2,11 +2,9 @@ docker build -t spikelabs/corebos-kubernetes -t spikelabs/corebos-kubernetes:$SH
 docker push spikelabs/corebos-kubernetes
 docker push spikelabs/corebos-kubernetes:$SHA
 
-apt-get update && apt-get install -y apt-transport-https nano bash curl gnupg gnupg2 gnupg1
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
-apt-get update
-apt-get install -y kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
 
 mkdir ~/.kube
 
