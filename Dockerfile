@@ -14,12 +14,6 @@ RUN glide install
 
 COPY . .
 
-#RUN go get -d -v ./...
-
-#CMD fresh -c runner.conf main.go
-
-#ENTRYPOINT ["/fresh", "-c", "runner.conf", "main.go"]
-
 CMD go run main.go
 
 EXPOSE 80

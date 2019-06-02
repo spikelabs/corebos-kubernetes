@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: corebos-kubernetes-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: corebos-kubernetes
+  template:
+    metadata:
+      labels:
+        component: corebos-kubernetes
+    spec:
+      containers:
+        - name: corebos-kubernetes
+          image: spikelabs/corebos-kubernetes
+          ports:
+            - containerPort: 80
+          env:
+            - name: NAMESPACE
+              value: default
+            - name: APP_ENV
+              value: production

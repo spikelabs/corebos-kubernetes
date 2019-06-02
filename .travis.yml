@@ -3,6 +3,11 @@ sudo: required
 services:
   - docker
 
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - BRANCH=$TRAVIS_BRANCH
+
 before_install:
   - docker build -t spikelabs/corebos-kubernetes-test .
 
@@ -10,6 +15,12 @@ script:
   - docker run spikelabs/corebos-kubernetes-test go version
 
 after_success:
-  - docker build -t spikelabs/corebos-kubernetes .
+  - docker build -t spikelabs/corebos-kubernetes:$BRANCH .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push spikelabs/corebos-kubernetes
+
+deploy:
+  - provider: script
+    script: ./stage-prod/deploy.sh
+    on:
+      branch: master
