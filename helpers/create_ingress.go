@@ -16,8 +16,9 @@ func CreateIngress(ingressData *pb.Ingress, clientSet *kubernetes.Clientset) err
 		ObjectMeta: metav1.ObjectMeta{
 			Name: ingressData.Name,
 			Annotations: map[string]string{
-				"kubernetes.io/ingress.class":       "nginx",
-				"certmanager.k8s.io/cluster-issuer": "corebos-cluster-issuer",
+				"kubernetes.io/ingress.class":                 "nginx",
+				"certmanager.k8s.io/cluster-issuer":           "corebos-cluster-issuer",
+				"nginx.ingress.kubernetes.io/proxy-body-size": "100M",
 			},
 		},
 		Spec: v1beta.IngressSpec{
