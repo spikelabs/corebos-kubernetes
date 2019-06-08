@@ -4,6 +4,7 @@ import (
 	"context"
 	"corebos-kubernetes/helpers"
 	pb "corebos-kubernetes/kubernetes"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -36,7 +37,7 @@ func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateCli
 	}
 
 	err = helpers.CreateDatabasePvc(databasePvc, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -44,7 +45,7 @@ func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateCli
 	}
 
 	err = helpers.CreateDatabase(database, databasePvc.Name, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -52,7 +53,7 @@ func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateCli
 	}
 
 	err = helpers.CreateDatabaseService(databaseService, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -60,7 +61,7 @@ func (s *Server) CreateClientDatabase(ctx context.Context, request *pb.CreateCli
 	}
 
 	err = helpers.CreateDatabaseNodePort(databaseNodePort, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -98,7 +99,7 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	}
 
 	err = helpers.DeleteDatabaseNodePort(nodePortName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -106,7 +107,7 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	}
 
 	err = helpers.CreateDeploymentPvc(deploymentPvc, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -114,7 +115,7 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	}
 
 	err = helpers.CreateDeployment(deployment, deploymentPvc.Name, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -122,7 +123,7 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	}
 
 	err = helpers.CreateService(service, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -130,7 +131,7 @@ func (s *Server) CreateClientDeployment(ctx context.Context, request *pb.CreateC
 	}
 
 	err = helpers.CreateIngress(ingress, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsAlreadyExists(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -164,7 +165,7 @@ func (s *Server) UpdateClientIngress(ctx context.Context, request *pb.UpdateClie
 	}
 
 	err = helpers.UpdateIngress(ingress, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -198,7 +199,7 @@ func (s *Server) UpdateClientDeployment(ctx context.Context, request *pb.UpdateC
 	}
 
 	err = helpers.UpdateDeployment(deployment, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -238,7 +239,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteDeployment(deploymentName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -246,7 +247,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteDeploymentPvc(deploymentPvcName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -254,7 +255,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteService(serviceName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -262,7 +263,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteIngress(ingressName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -270,7 +271,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteDatabase(databaseName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -278,7 +279,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteDatabasePvc(databasePvcName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
@@ -286,7 +287,7 @@ func (s *Server) DeleteClient(ctx context.Context, request *pb.DeleteClientReque
 	}
 
 	err = helpers.DeleteDatabaseService(databaseServiceName, clientSet)
-	if err != nil {
+	if err != nil && !errors.IsNotFound(err) {
 		return &pb.ClientResponse{
 			Success: 0,
 			Error:   err.Error(),
